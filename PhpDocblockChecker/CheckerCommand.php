@@ -130,7 +130,7 @@ class CheckerCommand extends Command
     {
         $stream = new PHP_Token_Stream($this->basePath . $file);
 
-        foreach($stream->getClasses() as $name => $class) {
+        foreach ($stream->getClasses() as $name => $class) {
             $errors = false;
 
             if (!$this->skipClasses && is_null($class['docblock'])) {
@@ -144,8 +144,10 @@ class CheckerCommand extends Command
                 );
 
                 if ($this->verbose) {
-                    $message = $class['file'] . ': ' . $class['startLine'] . ' - Class ' . $name . ' is missing a docblock.';
-                    $this->output->writeln('<error>' . $message . '</error>');
+                    $message = $class['file'].': '
+                            .$class['startLine']
+                            .' - Class '.$name.' is missing a docblock.';
+                    $this->output->writeln('<error>'.$message.'</error>');
                 }
             }
 
@@ -167,7 +169,9 @@ class CheckerCommand extends Command
                         );
 
                         if ($this->verbose) {
-                            $message = $class['file'] . ': ' . $method['startLine'] . ' - Method '.$name.'::'.$methodName.' is missing a docblock.';
+                            $message = $class['file'].': '
+                                    .$method['startLine'].' - Method '
+                                    .$name.'::'.$methodName.' is missing a docblock.';
                             $this->output->writeln('<error>' . $message . '</error>');
                         }
                     }
