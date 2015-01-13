@@ -11,10 +11,11 @@
 
 include __DIR__.'/vendor/autoload.php';
 
-use PhpDocblockChecker;
+use PhpDocblockChecker\CheckerApplication;
+use PhpDocblockChecker\CheckerCommand;
 
-$command = new PhpDocblockChecker\CheckerCommand();
-$application = new PhpDocBlockChecker\CheckerApplication();
+$command     = new CheckerCommand();
+$application = new CheckerApplication();
 
 $application->add($command);
 $application->run();
