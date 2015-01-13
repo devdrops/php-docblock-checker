@@ -26,37 +26,34 @@ class CheckerCommand extends Command
      * @var string
      */
     protected $basePath = './';
-
     /**
      * @var bool
      */
     protected $verbose = true;
-
     /**
      * @var array
      */
     protected $report = array();
-
     /**
      * @var array
      */
     protected $exclude = array();
-
     /**
      * @var bool
      */
     protected $skipClasses = false;
-
     /**
      * @var bool
      */
     protected $skipMethods = false;
-
     /**
      * @var OutputInterface
      */
     protected $output;
 
+    /**
+     * 
+     */
     protected function configure()
     {
         $this
@@ -69,6 +66,12 @@ class CheckerCommand extends Command
             ->addOption('json', 'j', InputOption::VALUE_NONE, 'Output JSON instead of a log.');
     }
 
+    /**
+     * 
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return type
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Process options:
@@ -101,6 +104,10 @@ class CheckerCommand extends Command
         return count($this->report) ? 1 : 0;
     }
 
+    /**
+     * 
+     * @param type $path
+     */
     protected function processDirectory($path = '')
     {
         $dir = new DirectoryIterator($this->basePath . $path);
@@ -126,6 +133,10 @@ class CheckerCommand extends Command
         }
     }
 
+    /**
+     * 
+     * @param type $file
+     */
     protected function processFile($file)
     {
         $stream = new PHP_Token_Stream($this->basePath . $file);
@@ -182,7 +193,5 @@ class CheckerCommand extends Command
                 $this->output->writeln($name . ' <info>OK</info>');
             }
         }
-
-
     }
 }
