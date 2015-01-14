@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Docblock Checker
  *
@@ -25,50 +26,52 @@ class CheckerCommand extends Command
     /**
      * @var string
      */
-    protected $basePath = './';
-
+    protected $basePath;
     /**
      * @var bool
      */
     protected $verbose = true;
-
     /**
      * @var array
      */
     protected $report = array();
-
     /**
      * @var array
      */
     protected $exclude = array();
-
     /**
      * @var bool
      */
     protected $skipClasses = false;
-
     /**
      * @var bool
      */
     protected $skipMethods = false;
-
     /**
      * @var OutputInterface
      */
     protected $output;
 
+    /**
+     * @return void
+     */
     protected function configure()
     {
         $this
             ->setName('check')
             ->setDescription('Check PHP files within a directory for appropriate use of Docblocks.')
             ->addOption('exclude', 'x', InputOption::VALUE_REQUIRED, 'Files and directories to exclude.', null)
-            ->addOption('directory', 'd', InputOption::VALUE_REQUIRED, 'Directory to scan.', './')
+            ->addOption('directory', 'd', InputOption::VALUE_REQUIRED, 'Directory to scan.', null)
             ->addOption('skip-classes', null, InputOption::VALUE_NONE, 'Don\'t check classes for docblocks.')
             ->addOption('skip-methods', null, InputOption::VALUE_NONE, 'Don\'t check methods for docblocks.')
             ->addOption('json', 'j', InputOption::VALUE_NONE, 'Output JSON instead of a log.');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Process options:
@@ -80,27 +83,36 @@ class CheckerCommand extends Command
         $this->skipClasses = $input->getOption('skip-classes');
         $this->skipMethods = $input->getOption('skip-methods');
 
-        // Set up excludes:
+        if (is_null($this->basePath)) {
+            $this->output->writeln('<error>Please provide the path to check.</error>');
+            
+            return 0;
+        }
+        
+        if (substr($this->basePath, -1) != '/') {
+            $this->basePath .= '/';
+        }
+        
         if (!is_null($exclude)) {
             $this->exclude = array_map('trim', explode(',', $exclude));
         }
 
-        // Check base path ends with a slash:
-        if (substr($this->basePath, -1) != '/') {
-            $this->basePath .= '/';
-        }
-
-        // Process:
+        $this->output->writeln('Checking...');
+        
         $this->processDirectory();
 
-        // Output JSON if requested:
         if ($json) {
             print json_encode($this->report);
         }
 
+        $this->output->writeln('Done!');
+        
         return count($this->report) ? 1 : 0;
     }
 
+    /**
+     * @param string $path
+     */
     protected function processDirectory($path = '')
     {
         $dir = new DirectoryIterator($this->basePath . $path);
@@ -126,11 +138,14 @@ class CheckerCommand extends Command
         }
     }
 
+    /**
+     * @param string $file
+     */
     protected function processFile($file)
     {
         $stream = new PHP_Token_Stream($this->basePath . $file);
 
-        foreach($stream->getClasses() as $name => $class) {
+        foreach ($stream->getClasses() as $name => $class) {
             $errors = false;
 
             if (!$this->skipClasses && is_null($class['docblock'])) {
@@ -144,8 +159,10 @@ class CheckerCommand extends Command
                 );
 
                 if ($this->verbose) {
-                    $message = $class['file'] . ': ' . $class['startLine'] . ' - Class ' . $name . ' is missing a docblock.';
-                    $this->output->writeln('<error>' . $message . '</error>');
+                    $message = $class['file'].': L'
+                            .$class['startLine']
+                            .' - Class '.$name." is missing it's docblock.";
+                    $this->output->writeln('    <error>'.$message.'</error>');
                 }
             }
 
@@ -167,18 +184,18 @@ class CheckerCommand extends Command
                         );
 
                         if ($this->verbose) {
-                            $message = $class['file'] . ': ' . $method['startLine'] . ' - Method '.$name.'::'.$methodName.' is missing a docblock.';
-                            $this->output->writeln('<error>' . $message . '</error>');
+                            $message = $class['file'].': L'
+                                    .$method['startLine'].' - Method '
+                                    .$name.'::'.$methodName." is missing it's docblock.";
+                            $this->output->writeln('    <error>' . $message . '</error>');
                         }
                     }
                 }
             }
 
             if (!$errors && $this->verbose) {
-                $this->output->writeln($name . ' <info>OK</info>');
+                $this->output->writeln('    '.$name.' <info>OK</info>');
             }
         }
-
-
     }
 }
