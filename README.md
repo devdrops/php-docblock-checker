@@ -14,10 +14,10 @@ This tool can:
  - It doesn't check for the integrity of your DocBlocks **at this time**.
 
 ###What does it requires?
-Please check `composer.json` for details.
+Please check [`composer.json`](composer.json) for details.
 
 ###Where is the documentation?
-Please check `docs.md` for further information on how to use this tool.
+Please check [`docs.md`](docs.md) for further information on how to use this tool.
 
 ###And, in case I want some references?
 
