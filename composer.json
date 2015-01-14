@@ -18,7 +18,7 @@
             "homepage": "http://about.me/devdrops",
             "role"    : "Developer"
         }
-    ]
+    ],
     "require": {
         "php": ">=5.3.3",
         "phpunit/php-token-stream": "1.*",
