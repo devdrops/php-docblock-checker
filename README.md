@@ -1,5 +1,7 @@
 ##PHP DocBlock Checker
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/7f483e40-892a-4245-8e54-06f830ff83c4/mini.png)](https://insight.sensiolabs.com/projects/7f483e40-892a-4245-8e54-06f830ff83c4)
+
 A basic CLI (Command Line Interface) tool to verify if your PHP classes have DocBlocks.
 
 ###What it does?
