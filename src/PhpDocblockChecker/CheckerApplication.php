@@ -25,7 +25,7 @@ class CheckerApplication extends Application
      */
     protected function getCommandName(InputInterface $input)
     {
-        return '';
+        return 'check';
     }
 
     /**
