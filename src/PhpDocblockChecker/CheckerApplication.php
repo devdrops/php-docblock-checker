@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP Docblock Checker
  *
@@ -20,6 +21,7 @@ class CheckerApplication extends Application
 {
     /**
      * Override the default command name logic and return our check command.
+     *
      * @param InputInterface $input
      * @return string
      */
@@ -31,6 +33,8 @@ class CheckerApplication extends Application
     /**
      * Overridden so that the application doesn't expect the command
      * name to be the first argument.
+     *
+     * @return void
      */
     public function getDefinition()
     {

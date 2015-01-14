@@ -68,10 +68,9 @@ class CheckerCommand extends Command
     }
 
     /**
-     * 
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return type
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -112,8 +111,7 @@ class CheckerCommand extends Command
     }
 
     /**
-     * 
-     * @param type $path
+     * @param string $path
      */
     protected function processDirectory($path = '')
     {
@@ -141,8 +139,7 @@ class CheckerCommand extends Command
     }
 
     /**
-     * 
-     * @param type $file
+     * @param string $file
      */
     protected function processFile($file)
     {
