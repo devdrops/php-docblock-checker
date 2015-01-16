@@ -4,8 +4,7 @@
  * PHP Docblock Checker
  *
  * @copyright    Copyright 2014, Block 8 Limited.
- * @license      https://github.com/Block8/php-docblock-checker/blob/master/LICENSE.md
- * @link         http://www.phptesting.org/
+ * @license      https://github.com/devdrops/php-docblock-checker/blob/master/LICENSE.md
  */
 
 namespace PhpDocblockChecker;
@@ -34,11 +33,11 @@ class CheckerCommand extends Command
     /**
      * @var array
      */
-    protected $report = array();
+    protected $report = [];
     /**
      * @var array
      */
-    protected $exclude = array();
+    protected $exclude = [];
     /**
      * @var bool
      */
@@ -97,7 +96,7 @@ class CheckerCommand extends Command
             $this->exclude = array_map('trim', explode(',', $exclude));
         }
 
-        $this->output->writeln('Checking...');
+        $this->output->writeln('<comment>Checking...</comment>');
         
         $this->processDirectory();
 
@@ -105,7 +104,12 @@ class CheckerCommand extends Command
             print json_encode($this->report);
         }
 
-        $this->output->writeln('Done!');
+        $this->output->writeln('<comment>Done!</comment>');
+        
+        $this->output->writeln(
+            'Found <fg=red;options=bold>'
+            .count($this->report).'</fg=red;options=bold> violation(s).'
+        );
         
         return count($this->report) ? 1 : 0;
     }
@@ -115,14 +119,14 @@ class CheckerCommand extends Command
      */
     protected function processDirectory($path = '')
     {
-        $dir = new DirectoryIterator($this->basePath . $path);
+        $dir = new DirectoryIterator($this->basePath.$path);
 
         foreach ($dir as $item) {
             if ($item->isDot()) {
                 continue;
             }
 
-            $itemPath = $path . $item->getFilename();
+            $itemPath = $path.$item->getFilename();
 
             if (in_array($itemPath, $this->exclude)) {
                 continue;
@@ -133,7 +137,7 @@ class CheckerCommand extends Command
             }
 
             if ($item->isDir()) {
-                $this->processDirectory($itemPath . '/');
+                $this->processDirectory($itemPath.'/');
             }
         }
     }
@@ -143,7 +147,7 @@ class CheckerCommand extends Command
      */
     protected function processFile($file)
     {
-        $stream = new PHP_Token_Stream($this->basePath . $file);
+        $stream = new PHP_Token_Stream($this->basePath.$file);
 
         foreach ($stream->getClasses() as $name => $class) {
             $errors = false;
@@ -159,10 +163,12 @@ class CheckerCommand extends Command
                 );
 
                 if ($this->verbose) {
-                    $message = $class['file'].': L'
+                    $message = $class['file'].':L'
                             .$class['startLine']
-                            .' - Class '.$name." is missing it's docblock.";
-                    $this->output->writeln('    <error>'.$message.'</error>');
+                            .' - <comment>Class '.$name." is missing it's docblock.</comment>";
+                    $this->output->writeln(
+                        '    <fg=red;options=bold>ERROR</fg=red;options=bold> '.$message
+                    );
                 }
             }
 
@@ -184,17 +190,22 @@ class CheckerCommand extends Command
                         );
 
                         if ($this->verbose) {
-                            $message = $class['file'].': L'
-                                    .$method['startLine'].' - Method '
-                                    .$name.'::'.$methodName." is missing it's docblock.";
-                            $this->output->writeln('    <error>' . $message . '</error>');
+                            $message = $class['file'].':L'
+                                    .$method['startLine'].' - <comment>Method '
+                                    .$name.'::'.$methodName." is missing it's docblock.</comment>";
+                            $this->output->writeln(
+                                '    <fg=red;options=bold>ERROR</fg=red;options=bold> '.$message
+                            );
                         }
                     }
                 }
             }
 
             if (!$errors && $this->verbose) {
-                $this->output->writeln('    '.$name.' <info>OK</info>');
+                $this->output->writeln(
+                    '    <fg=green;options=bold>OK</fg=green;options=bold> '
+                    .$class['package']['namespace'].'\\'.$name
+                );
             }
         }
     }
