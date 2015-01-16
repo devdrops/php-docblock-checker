@@ -4,8 +4,7 @@
  * PHP Docblock Checker
  *
  * @copyright    Copyright 2014, Block 8 Limited.
- * @license      https://github.com/Block8/php-docblock-checker/blob/master/LICENSE.md
- * @link         http://www.phptesting.org/
+ * @license      https://github.com/devdrops/php-docblock-checker/blob/master/LICENSE.md
  */
 
 namespace PhpDocblockChecker;
