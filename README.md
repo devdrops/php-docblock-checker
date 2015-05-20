@@ -3,7 +3,9 @@
 ![PhpDocblockChecker](https://40.media.tumblr.com/bd8546e2ed15eb6236cfa8425b1b80b7/tumblr_ni8w2kA12d1qjtycto2_1280.png)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7f483e40-892a-4245-8e54-06f830ff83c4/small.png)](https://insight.sensiolabs.com/projects/7f483e40-892a-4245-8e54-06f830ff83c4)
+
 [![Code Climate](https://codeclimate.com/github/devdrops/php-docblock-checker/badges/gpa.svg)](https://codeclimate.com/github/devdrops/php-docblock-checker)
+[![Test Coverage](https://codeclimate.com/github/devdrops/php-docblock-checker/badges/coverage.svg)](https://codeclimate.com/github/devdrops/php-docblock-checker/coverage)
 
 A basic CLI (Command Line Interface) tool to verify if your PHP classes have DocBlocks.
 
